@@ -1,0 +1,699 @@
+<!DOCTYPE HTML>
+
+<!--
+ ______________ 
+< TUICOOL.COM >
+ -------------- 
+        \   ^__^
+         \  (**)\__$__$__
+            (__)\       )\/\
+             U  ||------|
+                ||     ||
+-->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tc-auth" content="MTU1Nzky+cefc514b570d92b90ea1fd1a5e720fa78d2ca451" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="kXqzXbeXutoqsg4w3VDjXHsJAWF1uju55CWdbulczKM=" name="csrf-token" />
+    <title>
+            Double Free浅析 - 推酷
+   </title>
+    <meta name="description" content="Double Free浅析"/>
+  <link rel="shortcut icon" href="http://static0.tuicool.com/favicon.ico" type="image/x-icon" />
+  <link href="http://static0.tuicool.com/images/icon114.png" rel="Bookmark" />
+  <link rel="apple-touch-icon" sizes="57x57" href="http://static1.tuicool.com/images/icon57.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="http://static2.tuicool.com/images/icon72.png" />  
+  <link rel="apple-touch-icon" sizes="114x114" href="http://static0.tuicool.com/images/icon114.png" />    
+  <link rel="apple-touch-icon" sizes="144x144" href="http://static1.tuicool.com/images/icon144.png"/>  
+  <link href="http://asset.tuicool.com/assets/application-79535689d4effa45d2ea7ede6503dd7f.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="http://static0.tuicool.com/assets/font-awesome.min.css" rel="stylesheet">
+  <script src="http://asset.tuicool.com/assets/application-7edeeea3a20493861059090224f774ae.js" type="text/javascript"></script>
+
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="http://assets.tuicool.com/assets/font-awesome-ie7.min.css">
+  <![endif]--> 
+    <script type="text/javascript" src="http://static2.tuicool.com/assets/tip.js?t=3"></script>
+  
+  <script type="text/javascript" src="http://static1.tuicool.com/assets/spin.min.js"></script>
+<link rel="stylesheet" href="http://static0.tuicool.com/assets/github.css">
+
+</head>
+<body>
+  
+  <div id="header" class="navbar-fixed-top">
+    <div class="container">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> 
+          </a>
+          <a href="http://www.tuicool.com/" class="brand">推酷</a>        
+        <nav class="nav-collapse collapse">
+            <ul class="nav navbar primary-nav">                            
+              <li class="active">
+                <a href="http://www.tuicool.com/a/">
+                  文章
+                </a>
+              </li>              
+              <li class="">
+                <a href="http://www.tuicool.com/sites">
+                  站点
+                </a>
+              </li>
+              <li class="">
+                <a href="http://www.tuicool.com/topics">
+                  主题
+                </a>
+              </li>
+              <li class="">
+                <a href="http://huodong.tuicool.com/">
+                  活动
+                </a>
+              </li>
+                  <li class="">
+                    <a href="http://course.tuicool.com/">
+                      公开课
+                    </a>
+                  </li>
+              <li class="">
+                <a href="http://www.tuicool.com/mobile">
+                  APP
+                </a>
+              </li>
+              <li class="dropdown  ">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">周刊 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="http://www.tuicool.com/mags">编程狂人</a></li>
+                  <li><a href="http://www.tuicool.com/mags/design">设计匠艺</a></li> 
+                  <li><a href="http://www.tuicool.com/mags/startup">创业周刊</a></li> 
+                  <li><a href="http://www.tuicool.com/mags/tech">科技周刊</a></li>      
+                  <li><a href="http://www.tuicool.com/mags/guru">Guru Weekly</a></li> 
+                  <li><a href="http://www.tuicool.com/articles/weekly">一周拾遗</a></li>                  
+                </ul>
+              </li>
+              
+              </ul>
+            <form class="navbar-search pull-left" action="http://www.tuicool.com/search">
+              <input type="text" class="search-query span2" name="kw" placeholder="搜索">
+            </form>
+            <ul class="nav pull-right">
+                          
+                <li class="dropdown">         
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img alt="wolfzhang" src="http://static0.tuicool.com/images/0m.png">
+                    wolfzhang
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href='http://www.tuicool.com/user/462071652'>我的主页</a></li>
+                    <li><a href='http://www.tuicool.com/articles/my'>我的收藏</a></li>
+                    <li><a href="http://www.tuicool.com/settings">个人设置</a></li>           
+                    <li><a href="http://www.tuicool.com/notifications">消息通知</a></li>
+                    <li><a href="http://www.tuicool.com/bbs/go/issues">意见反馈</a></li>
+                    <li><a href="http://www.tuicool.com/logout">退出</a></li>
+                  </ul>
+                </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>   
+</div>
+  <div id ="flash_container" class="noPrint">    
+  </div>
+  
+  <div class="container-fluid">  
+      
+<div class="row-fluid article_row_fluid">
+    <div class="span8 contant article_detail_bg">
+        <h1>Double Free浅析</h1>
+        <div class="article_meta">
+            <div style="margin-bottom: 5px;">
+            <span class="timestamp">时间&nbsp;2015-10-05 14:10:38
+            </span>
+            <span class="from">
+                <i class="icon-globe"></i>
+                    <a class="cut cut28 from" href="/sites/zyINbuY" target="_blank">这里没人
+                    </a>
+            </span>
+            </div>
+            <div class="source">
+                <i style="float:left;">原文</i>&nbsp; 
+                <a class="cut cut70" href="http://libc.pw/2015/08/24/Double Free浅析/?utm_source=tuicool&amp;utm_medium=referral" style="display:inline-block;">http://libc.pw/2015/08/24/Double Free浅析/</a>
+            </div>
+            <div>
+                <span>主题</span>
+                <a href="/topics/11000086" target='_blank' >
+                    <span class="new-label">安全技术</span>
+                </a>
+            </div>
+        </div>
+        <div class="article_body" id="nei">
+            <div> 
+ <p>最近在研究一些堆上面的漏洞。然后某一天骑自行车在路上跑的时候我突然悟出了Double Free的真谛。</p> 
+ <p>2333好像太中二了一点，我是根据堆溢出的利用方法启发，再结合linux中libc的源码。研究出了double free的利用方法。虽然有关double free的利用技巧已经不是一个秘密。不过好像很少有相关的中文的介绍，所以以一个初学者的角度来讲解一下double free漏洞的利用方法。</p> 
+ <p>如果有错误，希望大家批评指正。Orz</p> 
+ <h2>简介</h2> 
+ <p>Double Free其实就是同一个指针free两次。虽然一般把它叫做double free。其实只要是free一个指向堆内存的指针都有可能产生可以利用的漏洞</p> 
+ <p>double free的原理其实和堆溢出的原理差不多，都是通过unlink这个双向链表删除的宏来利用的。只是double free需要由自己来伪造整个chunk并且欺骗操作系统。</p> 
+ <p>这里是glibc中有关内存管理的源代码</p> 
+ <ul> 
+  <li> <a href="http://code.woboq.org/userspace/glibc/malloc/malloc.c.html" target="_blank" rel="nofollow,noindex">malloc.c</a> </li> 
+ </ul> 
+ <h2>内存管理介绍</h2> 
+ <p>有关内存管理的部分我放在另外的一篇博客上。</p> 
+ <p> <a href="http://zh_explorer.gitcafe.io/2015/08/06/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%B8%ADfree%E7%9A%84%E8%A1%8C%E4%B8%BA/" target="_blank" rel="nofollow,noindex">传送门</a> </p> 
+ <p>这篇文章首发于乌云知识库。现在我将它发到自己的博客上，我只在这２个地方发过此文章。</p> 
+ <p>转载求写个出处Orz</p> 
+ <h2>漏洞的原理</h2> 
+ <p>要利用Double Free的漏洞。我们就要让系统进行unlink的操作，达到篡改指针的目的。但是一般的情况下，我们两次释放同一块内存会被操作系统给检测出来，怎么欺骗过操作系统才是最重要的。</p> 
+ <p>我们结合实际的情况来讲解会比较好。这里我自己写了个demo程序，代码发比较长，所以我放在gitcafe上。</p> 
+ <ul> 
+  <li> <a href="https://gitcafe.com/zh_explorer/zh_explorer/blob/master/heap.c" target="_blank" rel="nofollow,noindex">传送门</a> </li> 
+ </ul> 
+ <p>因为是自己写自己玩的demo程序，所以这程序是堆漏洞大礼包。用Double Free，heap corruption，use after free这3种方法都用各拿了一次shell</p> 
+ <p>这里我们用Double Free，其他漏洞一律不使用。</p> 
+ <p>这个程序在free的时候很明显的没有检验指针的有效性，而且没有在free之后将野指针清零。而且可以任意的指定每一个chunk的大小。所以可以很容易的构造double free。我们首先构造一个野指针。</p> 
+ <p>malloc(504)</p> 
+ <p>malloc(512)</p> 
+ <p>然后释放这2块内存。这样子我们就可以在距离第一个指针偏移量为0x200的地方有了一个野指针。</p> 
+ <p> <img src="http://img1.tuicool.com/M3aEZjN.png!web" class="alignCenter" /> </p> 
+ <p>我们留下了一个野指针p指向偏移为0x200的地方。然后我们需要做的就是伪造chunk。再free野指针p。首先是申请一块更大的内存，大小应该等于我们刚才申请的内存的总和。</p> 
+ <p>malloc(768)</p> 
+ <p>最好和刚才2块内存大小总和一样，如果不一样大也也可以，就是待会伪造第二快内存块的大小的时候，要让伪造的大小等于我们申请的chunk的大小，否则会无法绕过检查。会被系统检查出double free。</p> 
+ <p>然后这是我在第二次申请的内存中填入的内容。</p> 
+ <p>0x0 + 0x1f9 + 0x0804bfc0 - 0xc + 0x0804bfc0 - 0x8 + ‘a’*(0x200-24) + 0x000001f8 + 0x108</p> 
+ <p>现在的chunk就是这个样子了</p> 
+ <p> <img src="http://img0.tuicool.com/qu2eqm7.png!web" class="alignCenter" /> </p> 
+ <p>可以看到现在我们在内存中伪造了出了２个chunk。它们的结构就像图中我们看到的样子。首先是第一个chunk的chunk头部分。我们分别填上了0x０和0x1f9代表了前一个chunk正在使用，当前chunk的大小是１f8。然后就是伪造的双向链表指针了。为了绕过unlink中的检查，这里需要稍微构造一下这个双向链表的指针了。payload中的0x0804bfc0位置其实就是存放在.data段中的指针ptr。这样子就可以绕过保护了。</p> 
+ <div> 
+  <div> 
+   <pre class="prettyprint"><span><span>if</span> (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, <span>0</span>))</span><br /><span>   malloc_printerr (check_action, <span>&quot;corrupted double-linked list&quot;</span>, P, AV);</span><br /></pre> 
+  </div> 
+ </div> 
+ <p>结合而源代码，可以看到现在FD-&gt;bk的值正好也是指向我们伪造的chunk的头部分。然后我们在野指针ｐ的前面又伪造了一个chunk头。prve_size部分填0x1f8正好是前一个伪造chunk的大小。然后size部分填的是0x108。这样的话两个chunk正将我们申请的空间填满。然后第二个伪造chunk的size中最低位的flag置为０．这样free指针ｐ的时候，就会将前一个伪造的chunk给unlink。</p> 
+ <p>现在，只要在free一次指针ｐ。就可以触发漏洞了。这时候，我们的操作系统不会报错，而且我们本来正常的指针ptr已经变成了ptr-0xc。这要如果我们如果调用Edit函数来修改这个chunk的话，就可以干各种各样的事情了。</p> 
+ <p>我把完整利用的poc也放在了gitcafe上，如果需要的话可以看看，最终通过ret2kibc的方法拿到的shell.所以只要吧几个函数的地址稍微修改一下，可以在随意的一台机器上使用。PS:没有开PIE保护的。</p> 
+ <p> <a href="https://gitcafe.com/zh_explorer/zh_explorer/blob/master/heap.py" target="_blank" rel="nofollow,noindex">poc传送门</a> </p> 
+</div>
+        </div>
+        <div class="article_social">
+         <div class="article_like">
+    <div class="circle circle-like" id="my_zan" data_id="rIJBjqI">  </div>
+
+</div>
+        <div id="share_weixin_image">
+            <img width="100px" height="100px" src="http://s.jiathis.com/qrcode.php?url=http://www.tuicool.com/articles/rIJBjqI?via=wechat_qr">
+        </div>
+<div class="article_share_fav">
+    <div class="share" id="ckepop">
+        <span>分享</span>
+        <button class="share_weibo" id="share_weibo_id"  title="分享到新浪微博"></button>
+        <button class="share_qq" id="share_qq_id"  title="分享到QQ空间"></button>
+        <button class="share_weixin" id="share_weixin_id"></button>
+    </div>
+    <div class="fav_correct">
+        <button id="my_fav" data_id="rIJBjqI">
+            <i class="icon icon-star-empty"></i> <span id="fav_tip">收藏</span>
+        </button>
+        <button id="article-correct" data_id="rIJBjqI" uid="462071652">
+            <i class="icon icon-warning-sign"></i>
+            <span>纠错</span>
+        </button>
+    </div>
+</div>
+<script type="text/javascript">
+$("#share_weibo_id").click( function() {
+   window.open("http://share.baidu.com/s?type=text&searchPic=0&sign=on&to=tsina&url=http://www.tuicool.com/articles/rIJBjqI&title=Double+Free%E6%B5%85%E6%9E%90++%28%E5%88%86%E4%BA%AB%E8%87%AA+%40%E6%8E%A8%E9%85%B7%E7%BD%91%29&key=3113829255");
+});
+$("#share_qq_id").click( function() {
+   window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.tuicool.com/articles/rIJBjqI&title=Double+Free%E6%B5%85%E6%9E%90&desc=&summary=&site=");
+});
+$("#share_weixin_id").click( function() {
+  $("#share_weixin_image").toggle();
+});
+</script>
+
+
+        </div>
+        <div id="site_articles" style="clear:both;">
+              <div class="article-part-title">
+                <span>推荐文章</span>
+              </div>
+          <ul class="side_article_list">
+                <li class="side_article_list_item">
+                    1.<a href="/articles/2ABVbez" target="_blank" title="Python3实现TCP端口扫描器">
+                    Python3实现TCP端口扫描器
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    2.<a href="/articles/Anaea26" target="_blank" title="【建议收藏】黑客基础必学命令行！">
+                    【建议收藏】黑客基础必学命令行！
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    3.<a href="/articles/2qiIfu" target="_blank" title="浅析互联网后最具颠覆性创新技术——区块链安全">
+                    浅析互联网后最具颠覆性创新技术——区块链安全
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    4.<a href="/articles/UrANNvR" target="_blank" title="Android系统新权限模型剖析与预警">
+                    Android系统新权限模型剖析与预警
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    5.<a href="/articles/AfeiY3E" target="_blank" title="Chrome浏览器地址栏欺骗漏洞(CVE-2016-1707)">
+                    Chrome浏览器地址栏欺骗漏洞(CVE-2016-1707)
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    6.<a href="/articles/iUfyiuq" target="_blank" title="揭秘花招最多的三种敲诈者木马">
+                    揭秘花招最多的三种敲诈者木马
+                    </a>
+                </li>
+          </ul>
+        </div>
+        <div id="kan_articles"></div>
+        <div id="article_weibo" style="display:none;">
+            <div class='article-part-title'>
+                <span>相关微博</span>
+                <sub>
+                    <a href="/articles/weibo_list/rIJBjqI" target="_blank">(<i id="weibo_num"></i>)</a> 
+               </sub>
+            </div>
+            <div class="related-weibo-list"></div>
+        </div>
+        <div class="comments">
+    <div class="comments-area">
+    <div class="comments-header">
+        <h5>我来评几句</h5>
+        <div class="alert comment-alert alert-error" style="display:none;">
+            错误
+        </div>
+           <textarea name="comment[body]" id="comment-body" cols="60" rows="6" placeholder="请输入评论内容..." style="resize: none;"></textarea>
+           <a href="javascript:commentsub();" class="btn btn-medium btn-submit" id="comment-submit">发表评论</a>
+        <p style="margin-top: 5px;margin-left:10px;">
+            已发表评论数(<span class="comment_cnt"></span>)
+        </p>
+    </div>
+    <div class="comments-list">
+        <div class="empty-cmts alert alert-success" style="display:none;">
+            没有更多评论了^^
+        </div>
+    </div>
+    <div class="more-comments" style="display:none;">
+        <a href="">更多评论</a>
+    </div>
+    <div class="load-fail">
+        评论加载失败，<a href="javascript:reload_comments('rIJBjqI',1,0,1);">重新加载</a>
+        <img src="http://static1.tuicool.com//images/spinner.gif" id="spinner3"/>
+    </div>
+    </div>
+</div>
+
+    </div>
+        <div class="span4 article_right_side">
+            <div class="article_related_site article_detail_bg">
+    <h4 class="article-part-title">相关站点</h4>
+    <div class="article_related_site_body clearfix">
+        <div class="logo">
+            <img src="http://stimg3.tuicool.com/zyINbuY.png"/>
+        </div>
+        <div class="name">
+            <div>
+                <a href="/sites/zyINbuY" target="_blank"> 这里没人</a>
+            </div>
+            <div>
+                <div class="btn btn-success right_site_follow" id="my_follow" data_id="zyINbuY">＋订阅</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="right_site_articles" class="article_detail_bg">
+    <div class="article-part-title">
+        <span>热门文章</span>
+    </div>
+    <ul class="side_article_list">
+        <li class="side_article_list_item">
+            1.<a href="/articles/2ABVbez" target="_blank" title="Python3实现TCP端口扫描器"> Python3实现TCP端口扫描器 </a>
+        </li>
+        <li class="side_article_list_item">
+            2.<a href="/articles/Anaea26" target="_blank" title="【建议收藏】黑客基础必学命令行！"> 【建议收藏】黑客基础必学命令行！ </a>
+        </li>
+        <li class="side_article_list_item">
+            3.<a href="/articles/2qiIfu" target="_blank" title="浅析互联网后最具颠覆性创新技术——区块链安全"> 浅析互联网后最具颠覆性创新技术——区块链安全 </a>
+        </li>
+        <li class="side_article_list_item">
+            4.<a href="/articles/AfeiY3E" target="_blank" title="Chrome浏览器地址栏欺骗漏洞(CVE-2016-1707)"> Chrome浏览器地址栏欺骗漏洞(CVE-2016-1707) </a>
+        </li>
+        <li class="side_article_list_item">
+            5.<a href="/articles/iUfyiuq" target="_blank" title="揭秘花招最多的三种敲诈者木马"> 揭秘花招最多的三种敲诈者木马 </a>
+        </li>
+    </ul>
+</div>
+<div class="right-link">
+      <a href="http://www.handone.com/?f=tc" target="_blank"><img src="http://static1.tuicool.com/images/upload/handone300.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="https://www.daocloud.io/cloud/voice.html?utm_source=tuicool&utm_medium=banner%20&utm_campaign=daovoicecampaign" target="_blank"><img src="http://static1.tuicool.com/images/upload/daocloud300.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="https://www.jiguang.cn/devservice/?from=tuicool01" target="_blank"><img src="http://static1.tuicool.com/images/upload/jpush120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 0px">
+      <a href="https://www.teambition.com/?utm_source=tuicool&utm_medium=banner01" target="_blank"><img src="http://static2.tuicool.com/images/upload/teambition120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="https://www.jiandaoyun.com/?f=tc" target="_blank"><img src="http://static0.tuicool.com/images/upload/jiandaoyun120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="http://click.aliyun.com/m/6128/" target="_blank"><img src="http://static1.tuicool.com/images/upload/aliyun120.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+      <a href="http://www.toushibao.com/landing.html?utm_source=tuicoolwenzhang&utm_medium=guanggao&utm_campaign=tuicoolwenzhang.guanggao.tsbxgn" target="_blank"><img src="http://static1.tuicool.com/images/upload/jiankongbao120.jpg"/></a>
+
+</div>
+<div class="frd_pos">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-7054762349007490"
+     data-ad-slot="5705695566"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+         </div>
+</div>
+
+<div>
+   <!-- add_article to kan -->
+<div id="add-article-to-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <span class="add-title">收藏到推刊</span>
+    <a href="#new-kan" class="btn pull-right" data-toggle="modal">创建推刊</a>
+    <i class="clearfix"></i>
+  </div>
+  <div class="modal-body">
+    <ul id="add-kan-list">
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <input type="hidden" value="rIJBjqI" class="article-id" /> 
+    <button class="btn btn-primary pull-left add-to-btn">  收 藏  </button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true" style="margin-right: 15px">取消</button>
+  </div>
+</div>
+
+   <div id="new-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+    <input type="text" name="name" id="new-kan-name"  placeholder="推刊名(必填)" required data-validation-required-message="请填写推刊名" />
+    <span class="new-ness-name">请填写推刊名</span>
+    <br/>
+    <textarea name="desc" id="desc" rows="6" placeholder="推刊描述"></textarea>
+    <span class="new-ness-desc">描述不能大于100个字符!</span>
+    <br/>
+    权限设置：<input type="radio" name="type" value="1" checked="checked" /> 公开
+    <input type="radio" name="type" value="0"> 仅自己可见
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary pull-left create-kan-btn" disabled>创建</button>
+    <button class="btn dismiss-new-kan" data-dismiss="modal" aria-hidden="true">取消</button>
+  </div>
+</div>
+
+
+</div>
+<div id="article-correct-modal" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>文章纠错</h3>
+    </div>
+    <div class="modal-body">
+        <input type="hidden" value="rIJBjqI" id="article-correct-source">
+        <div>
+            <label for="article-correct-select">
+                错误类型
+            </label>
+            <select id="article-correct-select">
+                <option value="正文不准确">正文不准确</option>
+                <option value="标题不准确">标题不准确</option>
+                <option value="排版有问题">排版有问题</option>
+                <option value="排版有问题">主题不准确</option>
+                <option value="没有分页内容">没有分页内容</option>
+                <option value="图片无法显示">图片无法显示</option>
+                <option value="视频无法显示">视频无法显示</option>
+                <option value="与原文不一致">与原文不一致</option>
+            </select>
+        </div>
+        <div>
+            <label for="article-correct-other">
+                补充信息
+            </label>
+            <textarea id="article-correct-other" class="span4"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary pull-right huodong_correct_submit" id="article-correct-submit">
+            &nbsp;&nbsp;提交&nbsp;&nbsp;
+        </button>
+    </div>
+</div>
+    <div class="share_zone">
+    <div class="bdsharebuttonbox"> 
+         <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_more" data-cmd="more"></a>
+     </div>
+    <script>
+        window._bd_share_config = {
+            "common" : {
+                "bdSnsKey" : {
+                    "tsina" : "3113829255",
+                    "tqq" : "801536792"
+                },
+                "bdText" : "Double Free浅析 (分享自 @推酷网)",
+                "bdMini" : "2",
+                "bdMiniList" : false,
+                "bdPic" : "http://aimg2.tuicool.com/M3aEZjN.png",
+                "bdStyle" : "1",
+                "bdSize" : "24"
+            },
+            "slide" : {
+                "type" : "slide",
+                "bdImg" : "1",
+                "bdPos" : "left",
+                "bdTop" : "200"
+            }
+        };
+        with (document)
+        0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+    </script>
+</div>
+
+<style type="text/css">
+    .btn-large {
+        padding: 0;
+    }
+    .load-fail {
+        display: none;
+    }
+</style>
+<script src="http://static1.tuicool.com//assets/highlight.pack.js"></script>
+<script type="text/javascript">
+    $('table').each(function(i) {
+        var size = $(this).children().size();
+        if (size > 1) {
+            $(this).attr('class',"table table-bordered");
+        } else if (size == 1) {
+            var e11 = $(this).children(":first");
+            var e1 = e11[0];
+            var name = e1.nodeName.toLowerCase();
+            if ("tbody" == name) {
+                if (e1.children.length > 1) {
+                    $(this).attr('class',"table table-bordered");
+                } else if (e1.children.length == 1){
+                    var e12 = e1.children[0];
+                    var name2 = e12.nodeName.toLowerCase();
+                    if ("tr" == name2) {
+                       if (e12.children.length > 1) {
+                         $(this).attr('class',"table table-bordered");
+                       }
+                    }
+                }
+            }
+        }
+    });
+        window.page = 0;
+        window.last = 0;    
+        window.first = true;
+        resize_article_image('#nei', 550);
+                load_comments("rIJBjqI",1,0,"MTU1Nzky+cefc514b570d92b90ea1fd1a5e720fa78d2ca451");
+                window.uid = parseInt("155792");
+        open_add_article_to_kan("true");
+        async_do_zan_article(); 
+        $('pre').each(function(i, e) {
+            hljs.highlightBlock(e, "<span class='indent'>  </span>", false)
+        });
+       
+          function commentsub(){  
+    $.ajaxSetup({
+    error:function(x,e){        
+      $('.comment-alert').text("系统出现问题，请稍候再试").show();
+      $('textarea').attr('disabled',false);
+      return false;
+    },
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  }); 
+    $("#comment-body").attr("disabled",true);
+    $("#comment-submit").addClass("disabled");
+    $("#comment-submit").attr("href","#comment-body");
+    text = $("#comment-body").val();
+    if(text.length < 2 ){
+        $('.comment-alert').text("你的字数太少了").show();
+        reset_submit_btn();
+    }else if(text.length > 500){
+        $('.comment-alert').text("你的字数太多了,不能超过500字!").show();
+        reset_submit_btn();
+    }else{      
+    $.post("/comments.json", { aid: "rIJBjqI", html_body: $("#comment-body").val(), auth: "MTU1Nzky+cefc514b570d92b90ea1fd1a5e720fa78d2ca451"},function(data){
+      if(data.success == true){
+        $(".comments-list").show();
+        var aComment = data.comment;
+        var text = aComment.content;
+        var id = "rIJBjqI";
+        var title = "Double Free浅析";
+        var share_code = "<ul class='dropdown-menu'><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=tsina&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>新浪微博</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=tqq&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @tuicool）'>腾讯微博</a></li><li><a target='blank' href='http://s.evernote.com/grclip?url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>印象笔记</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=douban&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>豆瓣</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=renren&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>人人网</a></li></ul>"
+        $(".comments-list").prepend("<div class='single' id='c-"+aComment.id+"'><img src='"+aComment.avatar+"' class='img avatar'><div class='comment-item' style='padding:0 0 0 5px;'><div class='info mine'>"+"<a class='uname' href='/user/"+ aComment.uid+ "' target='_blank'>"+ aComment.username  +"</a>" +"<span class='timestamp'>" +aComment.timestamp +"</span> <div class='reply dropdown'><a class='dropdown-toggle share' data-toggle='dropdown' href='javascript:share("+aComment.id+");'>分享<b class='caret'></b></a> | <a href='javascript:reply(\""+aComment.username+"\");'>回复</a>"+share_code+"</div> "+ "</div><div class='body' id='comment-"+aComment.id+"'>" + aComment.content + "</div></div></div>");
+        $("#comment-body").attr("disabled",false).val("");
+        $("#comment-submit").removeClass("disabled");
+        $("#comment-submit").attr("href","javascript:commentsub();");
+        location = "#c-"+aComment.id
+        $('.empty-cmts').hide();
+        $('.comment-alert').hide();
+        $('.comment_cnt').text(parseInt($('.comment_cnt').text())+1);
+       } else{
+        $('.comment-alert').text(data.error).show();
+        reset_submit_btn();
+       }
+    },"json");
+    }
+}
+function reset_submit_btn() {
+  $('textarea').attr('disabled',false);
+  $("#comment-submit").removeClass("disabled");
+  $("#comment-submit").attr("href","javascript:commentsub();");
+}
+
+       handle_follow_site("#my_follow","已订阅","+ 订阅");
+</script>
+
+
+    <div class="loader-inner ball-pulse ball-loading-center" id="page-loading" style="display: none">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="read-later-alert"></div>
+  </div>
+
+    <div class="footer">
+    <div class="footer-inner">
+    <dl class="about-link site-link">
+        <dt>
+            网站相关
+        </dt>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/about">关于我们</a>
+        </dd>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/mobile">移动应用</a>
+        </dd>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/bbs/go/issues">建议反馈</a>
+        </dd>
+    </dl>
+    <dl class="site-link follow-link">
+        <dt>
+            关注我们
+        </dt>
+        <dd>
+            <a target="_blank" href="http://e.weibo.com/tuicool2012"><img src="http://static1.tuicool.com/images/weibo-32.png">推酷网</a>
+        </dd>
+        <dd><img src="http://static1.tuicool.com/images/weixin-32.png">tuicool2012
+        </dd>
+    </dl>
+    <dl class="site-link links">
+        <dt>
+            友情链接
+        </dt>
+        <dd>
+                <a href="http://www.woshipm.com/" title="人人都是产品经理" target="_blank">人人都是产品经理</a>
+                <a href="http://www.pm265.com/" title="PM256" target="_blank">PM256</a>
+                <a href="http://www.yidonghua.com/" title="移动信息化" target="_blank">移动信息化</a>
+                <a href="http://www.snsiu.com/" title="行晓网" target="_blank">行晓网</a>
+                <a href="http://www.taskcity.com/" title="智城外包网" target="_blank">智城外包网</a>
+                <a href="http://www.huxiu.com/" title="虎嗅" target="_blank">虎嗅</a>
+                <a href="http://www.iterduo.com/" title="IT耳朵" target="_blank">IT耳朵</a>
+                <a href="http://mediaworks.caixin.com/" title="创媒工场" target="_blank">创媒工场</a>
+                <a href="http://www.managershare.com/" title="经理人分享" target="_blank">经理人分享</a>
+                <a href="http://www.shichangbu.com/" title="市场部网" target="_blank">市场部网</a>
+                <a href="http://www.ikanchai.com/" title="砍柴网" target="_blank">砍柴网</a>
+                <a href="http://www.cocoachina.com/" title="CocoaChina" target="_blank">CocoaChina</a>
+                <a href="http://www.ibeifeng.com/" title="北风网" target="_blank">北风网</a>
+                <a href="http://www.jiankongbao.com/" title="云智慧" target="_blank">云智慧</a>
+                <a href="http://www.wyzc.com" title="我赢职场" target="_blank">我赢职场</a>
+                <a href="http://www.thebigdata.cn/" title="大数据时代" target="_blank">大数据时代</a>
+                <a href="http://www.qidic.com/" title="奇笛网" target="_blank">奇笛网</a>
+                <a href="http://www.cngulu.com/" title="咕噜网" target="_blank">咕噜网</a>
+                <a href="http://www.linuxdiyf.com/" title="红联linux" target="_blank">红联linux</a>
+                <a href="http://win10.ithome.com" title="Win10之家" target="_blank">Win10之家</a>
+                <a href="http://www.niaogebiji.com/" title="鸟哥笔记" target="_blank">鸟哥笔记</a>
+                <a href="http://www.play.cn" title="爱游戏" target="_blank">爱游戏</a>
+                <a href="http://www.investide.cn/" title="投资潮" target="_blank">投资潮</a>
+                <a href="http://www.31huiyi.com/" title="31会议网" target="_blank">31会议网</a>
+                <a href="https://www.jiguang.cn/" title="极光推送" target="_blank">极光推送</a>
+                <a href="https://www.teambition.com/" title="Teambition" target="_blank">Teambition</a>
+                <a href="http://www.guigu.org/" title="硅谷网" target="_blank">硅谷网</a>
+                <a href="https://home.leangoo.com/" title="leangoo" target="_blank">leangoo</a>
+                <a href="http://www.zealer.com/" title="ZEALER中国" target="_blank">ZEALER中国</a>
+                <a href="http://www.opensns.cn/" title="OpenSNS" target="_blank">OpenSNS</a>
+                <a href="http://www.edu360.cn/" title="小牛学堂" target="_blank">小牛学堂</a>
+                <a href="http://www.handone.com/" title="handone" target="_blank">handone</a>
+                <a href="http://www.scrumcn.com/" title="Scrum中文网" target="_blank">Scrum中文网</a>
+                <a href="http://www.bigniu.com/" title="比戈大牛" target="_blank">比戈大牛</a>
+                <a href="https://www.upyun.com/" title="又拍云" target="_blank">又拍云</a>
+            <a href="/links">更多链接>></a>&nbsp;&nbsp;
+        </dd>
+    </dl>
+    <div class="clear"></div>
+    </div>
+</div>
+
+<div style="display:none;">
+   <script src="http://s22.cnzz.com/stat.php?id=5541078&web_id=5541078&show=pic" language="JavaScript"></script>
+</div>
+
+
+</body>
+</html>
